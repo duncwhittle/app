@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EA Dressage — Preliminary 1.2</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -66,216 +66,37 @@ input[type=range]{width:80px;accent-color:var(--gold);}
 .mb.active .mn{color:var(--navy);}
 .mbr{margin-left:auto;}
 .mbcoeff{font-size:9px;font-weight:700;color:#7a5a00;background:var(--gold-light);padding:1px 5px;border-radius:4px;}
-
-/* Hide mobile-only elements on desktop */
-.mob-header-tests,.mob-fs-btn,.mobile-overlay,.mobile-controls,.mobile-tests{display:none;}
-
 @media(max-width:680px),(orientation:portrait){
-  /* Show mobile elements */
-  .mob-header-tests{display:flex!important;}
-  .mob-fs-btn{display:block!important;}
-  .mobile-overlay{display:flex!important;flex-direction:column;}
-  .mobile-controls{display:flex!important;}
-
-  body{
-    height:100dvh;
-    overflow:hidden;
-    display:flex;
-    flex-direction:column;
-    background:#1a3a5c;
-  }
-
-  /* Mobile header — contains title + test buttons + fullscreen */
-  .header{
-    padding:6px 10px;
-    flex-shrink:0;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:8px;
-  }
-  .htitle{font-size:12px;white-space:nowrap;}
-  .hsub{display:none;}
+  body{height:auto;overflow:auto;}
+  .main{flex-direction:column;}
+  .side{width:100%;border-left:none;border-top:1px solid var(--border);}
   .hc{display:none;}
-
-  /* Test buttons injected into header on mobile */
-  .mob-header-tests{
-    display:flex;gap:4px;
-  }
-  .mob-header-tests button{
-    padding:3px 8px;font-size:10px;font-family:'DM Sans',sans-serif;
-    border-radius:12px;border:1px solid rgba(255,255,255,0.3);
-    background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);
-    cursor:pointer;font-weight:500;
-  }
-  .mob-header-tests button.active{
-    background:var(--gold);border-color:var(--gold);color:#1c1a17;
-  }
-  .mob-fs-btn{
-    background:none;border:1px solid rgba(255,255,255,0.3);
-    border-radius:8px;color:#fff;padding:3px 7px;
-    font-size:13px;cursor:pointer;flex-shrink:0;
-  }
-  .mob-fs-btn.active{background:rgba(201,168,76,0.4);}
-
-  /* Arena area — takes remaining space, centres canvas */
-  .main{
-    flex:1;min-height:0;
-    display:flex;flex-direction:column;
-    align-items:center;
-    justify-content:flex-start;
-    background:#1a3a5c;
-    position:relative;
-  }
-  .side{display:none;}
-  .awrap{
-    /* Canvas is sized by JS to maintain 3:1 ratio — just centre it */
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex:1;
-    min-height:0;
-    width:100%;
-    position:relative;
-  }
-  #cv{
-    display:block;
-    border-radius:0;
-    box-shadow:none;
-    /* Size set by JS — do NOT force 100% here */
-    max-width:100%;
-  }
-
-  /* Movement overlay — below canvas, above controls */
-  .mobile-overlay{
-    width:100%;
-    flex-shrink:0;
-    background:var(--navy);
-    padding:5px 12px;z-index:20;
-    border-top:1px solid rgba(255,255,255,0.12);
-  }
-  .mob-top{display:flex;align-items:center;gap:8px;}
-  .mob-num{
-    width:18px;height:18px;border-radius:50%;
-    background:rgba(255,255,255,0.15);color:#fff;
-    font-size:9px;font-weight:600;
-    display:flex;align-items:center;justify-content:center;flex-shrink:0;
-  }
-  .mob-label{font-size:11px;font-weight:500;color:#fff;flex:1;line-height:1.3;}
-  .mob-expand{
-    background:none;border:none;color:rgba(255,255,255,0.5);
-    font-size:12px;cursor:pointer;padding:0 2px;flex-shrink:0;
-  }
-  .mob-pills{display:flex;gap:3px;margin-top:3px;flex-wrap:wrap;}
-  .mob-details{
-    display:none;margin-top:4px;
-    font-size:10px;color:rgba(255,255,255,0.75);line-height:1.5;
-    border-top:1px solid rgba(255,255,255,0.1);padding-top:4px;
-  }
-  .mob-details.show{display:block;}
-
-  /* Controls bar */
-  .mobile-controls{
-    width:100%;flex-shrink:0;
-    display:flex;align-items:center;justify-content:center;
-    gap:8px;
-    padding:6px 10px;
-    padding-bottom:calc(6px + env(safe-area-inset-bottom));
-    background:var(--navy);
-    border-top:1px solid rgba(255,255,255,0.12);
-  }
-  .mob-btn{
-    width:38px;height:38px;border-radius:50%;
-    border:1px solid rgba(255,255,255,0.25);
-    background:rgba(255,255,255,0.1);
-    color:#fff;font-size:13px;cursor:pointer;
-    display:flex;align-items:center;justify-content:center;
-    flex-shrink:0;
-  }
-  .mob-btn.play{
-    background:rgba(201,168,76,0.92);border-color:var(--gold);
-    color:#1c1a17;width:46px;height:46px;font-size:17px;
-  }
-  .mob-btn.loop-on{background:rgba(76,175,80,0.7);border-color:#4caf50;}
-
-  /* Speed slider */
-  .mob-speed{
-    display:flex;align-items:center;gap:4px;flex:1;max-width:100px;
-  }
-  .mob-speed-lbl{font-size:9px;color:rgba(255,255,255,0.6);white-space:nowrap;}
-  .mob-speed input[type=range]{width:100%;accent-color:var(--gold);}
-  .mob-speed-val{font-size:9px;color:rgba(255,255,255,0.8);min-width:20px;text-align:right;}
-
-  /* Hide floating test selector — now in header */
-  .mobile-tests{display:none!important;}
 }
 </style>
-
 </head>
 <body>
 <div class="header">
-  <div>
-    <div class="htitle" id="htitle">Preliminary 1.2 · Equestrian Australia</div>
-    <div class="hsub" id="hsub">Effective 1 January 2023 · 60 × 20m arena</div>
-  </div>
-  <!-- Mobile: test buttons + fullscreen in header -->
-  <div class="mob-header-tests" id="mob-header-tests">
-    <button id="mob-ht12" onclick="switchTest('1.2')" class="active">1.2</button>
-    <button id="mob-ht13" onclick="switchTest('1.3')">1.3</button>
-    <button id="mob-htevb" onclick="switchTest('evb')">Ev B</button>
-  </div>
-  <button class="mob-fs-btn" id="mob-fs" onclick="toggleFullscreen()">⛶</button>
+  <div><div class="htitle" id="htitle">Preliminary 1.2 · Equestrian Australia</div>
+  <div class="hsub">Effective 1 January 2023 · 60 × 20m arena</div></div>
   <div class="hc">
     <span class="hlbl">Test</span>
     <button class="hbtn active" id="t12" onclick="switchTest('1.2')">Prelim 1.2</button>
     <button class="hbtn" id="t13" onclick="switchTest('1.3')">Prelim 1.3</button>
     <button class="hbtn" id="tevb" onclick="switchTest('evb')">Ev Test B</button>
-    <span class="hlbl" style="margin-left:4px;">Mode</span>
+    <span class="hlbl" style="margin-left:6px;">Mode</span>
     <button class="hbtn active" id="m-uniform" onclick="setMode('uniform')">Uniform</button>
     <button class="hbtn" id="m-relative" onclick="setMode('relative')">Relative</button>
-    <button class="hbtn" id="m-timed" onclick="setMode('timed')">Timed</button>
+    <button class="hbtn" id="m-timed" onclick="setMode('timed')">Timed 5:30</button>
     <div class="hslider">
       <span class="hlbl">Speed</span>
       <input type="range" id="spslider" min="20" max="1000" value="800" step="5" oninput="setSpeed(+this.value)">
       <span class="hval" id="spval">8×</span>
     </div>
-    <button class="hbtn active" id="exit-toggle" onclick="toggleExit()">Exit: On</button>
+    <button class="hbtn" id="exit-toggle" onclick="toggleExit()">Exit: On</button>
   </div>
 </div>
 <div class="main">
-  <div class="awrap">
-    <canvas id="cv"></canvas>
-    <!-- Floating test selector (fallback, hidden on mobile by CSS) -->
-    <div class="mobile-tests" id="mob-tests" style="display:none">
-      <button id="mob-t12" onclick="switchTest('1.2')" class="active">Prelim 1.2</button>
-      <button id="mob-t13" onclick="switchTest('1.3')">Prelim 1.3</button>
-      <button id="mob-tevb" onclick="switchTest('evb')">Ev Test B</button>
-    </div>
-  </div>
-
-  <!-- Mobile overlay and controls sit BELOW canvas -->
-  <div class="mobile-overlay" id="mob-overlay">
-    <div class="mob-top">
-      <div class="mob-num" id="mob-num">·</div>
-      <div class="mob-label" id="mob-label">—</div>
-      <button class="mob-expand" id="mob-expand" onclick="toggleMobExpand()">▾</button>
-    </div>
-    <div class="mob-pills" id="mob-pills"></div>
-    <div class="mob-details" id="mob-details"></div>
-  </div>
-
-  <div class="mobile-controls" id="mob-controls">
-    <button class="mob-btn" onclick="userPrev()">←</button>
-    <button class="mob-btn play" id="mob-pb" onclick="togglePlay()">▶</button>
-    <button class="mob-btn" onclick="userNext()">→</button>
-    <button class="mob-btn" id="mob-lb" onclick="toggleLoop()">↺</button>
-    <div class="mob-speed">
-      <span class="mob-speed-lbl">Speed</span>
-      <input type="range" min="20" max="1000" value="800" step="5"
-        oninput="setSpeed(+this.value);document.getElementById('mob-spval').textContent=speedMult.toFixed(speedMult<1?1:0)+'×'">
-      <span class="mob-speed-val" id="mob-spval">8×</span>
-    </div>
-  </div>
+  <div class="awrap"><canvas id="cv"></canvas></div>
   <div class="side">
     <div class="mcard">
       <div class="ch">
@@ -319,14 +140,14 @@ input[type=range]{width:80px;accent-color:var(--gold);}
 <script>
 // ═══════════════════════════════════════════════════
 // COORDINATE SYSTEM
-// Real world: A=(0,0) bottom, C=(0,arenaLen) top, 20m wide
-// Canvas Y flipped: canvasY = OY + (arenaLen−realY)*SC
-// toC defined in sizeCanvas section below
+// Real world: A=(0,0) bottom, C=(0,60) top, 20m wide
+// Left long side x=−10, Right x=+10
+// Canvas Y flipped: canvasY = OY + (60−realY)*SC
 // ═══════════════════════════════════════════════════
 const cv=document.getElementById('cv');
 const ctx=cv.getContext('2d');
 let SC=1,OX=0,OY=0;
-function toC(x,y){return[OX+x*SC, OY+(arenaLen-y)*SC];}
+function toC(x,y){return[OX+x*SC, OY+(60-y)*SC];}
 
 // ─── KEY OFFSET COORDINATES ─────────────────────────
 // All horse path coords — 0.75m inside boundary
@@ -397,11 +218,7 @@ const GL={
   freewalk:'Free walk on long rein',halt:'Halt / Salute',
   stretch:'Stretch trot (rising)',none:'Approach'
 };
-// CSS class names for gait pills
-const GS={
-  trot:'trot',canter:'canter',walk:'walk',freewalk:'freewalk',
-  halt:'halt',stretch:'stretch',none:'none'
-};
+const GS={trot:'trot',canter:'canter',walk:'walk',freewalk:'freewalk',halt:'halt',stretch:'stretch',none:'none'};
 // m/s
 const GSPEED={walk:1.111,freewalk:1.111,trot:2.222,canter:3.333,stretch:2.222,halt:0,none:1.5};
 
@@ -730,156 +547,38 @@ const MOVES_13=[
 // EVENTING TEST B 45cm & 60cm 2020
 // ═══════════════════════════════════════════════════
 const MOVES_EVB=[
-
-{n:0,label:'Approach',
- desc:'Horse and rider wait outside the arena below A, ready to enter.',
- gait:'none',dir:'',coeff:1,
- segs:[line([[0,-5],[0,0]],'none')]},
-
-{n:1,label:'A → C · working trot',
- desc:'Enter working trot at A. Straight up centreline to C.',
- gait:'trot',coeff:1,
- dir:'Straightness on centreline, regularity and quality of trot.',
- segs:[
-   line([[0,0],Ao,Xo,Co],'trot'),
- ]},
-
-{n:2,label:'C → H → E · circle left 20m · E → K → A',
- desc:'Track left at C. Boundary C→H→E. 20m circle left at E. Continue boundary E→K→A.',
- gait:'trot',coeff:1,
- dir:'Quality and regularity of trot, bend, balance and size & shape of circle.',
- segs:[
-   arc([Co,TL,Ho,Eo],'trot'),
-   circ(0,30,9.25,180,true,'trot'),
-   arc([Eo,Ko,BL,Ao],'trot'),
- ]},
-
-{n:3,label:'A · circle left 20m (trot→canter) · A→F→B',
- desc:'20m circle left at A. Working trot first half, developing left lead canter second half. Continue boundary A→F→B in working canter.',
- gait:'canter',coeff:1,
- dir:'Quality of trot and canter, willing calm transition, shape and size of circle, bend and balance.',
- segs:[
-   circ(0,10,9.25,270,true,'trot',180),
-   circ(0,10,9.25,90,true,'canter',180),
-   arc([Ao,BR,Fo,Bo],'canter'),
- ]},
-
-{n:4,label:'B → E · half circle left 20m',
- desc:'Half circle left (CCW) from B to E. Centre X, radius 9.25m. Working canter.',
- gait:'canter',coeff:1,
- dir:'Quality and regularity of canter, bend, balance and size & shape of half circle.',
- segs:[
-   circ(0,30,9.25,0,true,'canter',180),
- ]},
-
-{n:5,label:'Between E & K · working trot',
- desc:'Transition to working trot between E and K. End at K.',
- gait:'trot',coeff:1,
- dir:'Willing, balanced transition, quality of canter and trot.',
- segs:[
-   grad([Eo,Ko],'canter','trot',0.5),
- ]},
-
-{n:6,label:'K → A · working trot → medium walk at A',
- desc:'Working trot K→A along boundary. Transition to medium walk at A.',
- gait:'trot',coeff:1,
- dir:'Quality of trot, willing, bend and balance.',
- segs:[
-   arc([Ko,BL,Ao],'trot'),
- ]},
-
-{n:7,label:'A → F · medium walk',
- desc:'Transition to medium walk at A. Boundary A→F in medium walk.',
- gait:'walk',coeff:1,
- dir:'Calm transition, regularity and quality of walk.',
- segs:[
-   arc([Ao,BR,Fo],'walk'),
- ]},
-
-{n:8,label:'F–X–H (free walk) · H–C (medium walk)',
- desc:'Diagonal F→X→H in free walk on long rein. At H transition to medium walk, continue boundary H→C.',
- gait:'freewalk',coeff:1,
- dir:'Quality of walk allowing the horse to lower and stretch out head and neck forward and downward.',
- segs:[
-   line([Fo,Xo,Ho],'freewalk'),
-   arc([Ho,TL,Co],'walk'),
- ]},
-
-{n:9,label:'C → M → B · working trot',
- desc:'Transition to working trot at C. Boundary C→TR→M→B.',
- gait:'trot',coeff:1,
- dir:'Willing, balanced transition, quality of trot.',
- segs:[
-   arc([Co,TR,Mo,Bo],'trot'),
- ]},
-
-{n:10,label:'B · circle right 20m · B→F→A',
- desc:'20m circle right (CW) at B. Centre X, radius 9.25m. Continue boundary B→F→A.',
- gait:'trot',coeff:1,
- dir:'Quality and regularity of trot, bend, balance and size & shape of circle.',
- segs:[
-   circ(0,30,9.25,0,false,'trot'),
-   arc([Bo,Fo,BR,Ao],'trot'),
- ]},
-
-{n:11,label:'A · circle right 20m (trot→canter) · A→K→E',
- desc:'20m circle right at A. Working trot first half, developing right lead canter second half. Continue boundary A→K→E in working canter.',
- gait:'canter',coeff:1,
- dir:'Quality of trot and canter, willing calm transition, shape and size of circle, bend and balance.',
- segs:[
-   circ(0,10,9.25,270,false,'trot',180),
-   circ(0,10,9.25,90,false,'canter',180),
-   arc([Ao,BL,Ko,Eo],'canter'),
- ]},
-
-{n:12,label:'E → B · half circle right 20m',
- desc:'Half circle right (CW) from E to B. Centre X, radius 9.25m. Working canter.',
- gait:'canter',coeff:1,
- dir:'Quality and regularity of canter, bend, balance and size & shape of half circle.',
- segs:[
-   circ(0,30,9.25,180,false,'canter',180),
- ]},
-
-{n:13,label:'Between B & F · working trot · F→A',
- desc:'Transition to working trot between B and F. Continue boundary F→A.',
- gait:'trot',coeff:1,
- dir:'Willing, balanced transition, quality of canter and trot.',
- segs:[
-   grad([Bo,Fo],'canter','trot',0.5),
-   arc([Fo,BR,Ao],'trot'),
- ]},
-
-{n:14,label:'A → X · Halt, salute · Exit CW',
- desc:'Turn up centreline working trot. Halt at X, salute. Walk to C, track right CW, exit at A.',
- gait:'halt',coeff:1,
- dir:'Bend and balance in turn, straightness on centreline and in halt, willing balanced transition, immobility.',
- prompt:'💡 Walk to C, track right, exit CW on long rein',
- promptMarker:[0,30],promptDist:4,
- segs:[
-   arc([AE,Ao,Xo],'trot'),
-   halt([0,30]),
-   line([[0,30],CS],'walk'),
-   arc([CS,Co,TR,Mo,Bo,Fo,BR,AE],'walk'),
-   line([AE,[0,0],[0,-5]],'none'),
- ]},
+{n:0,label:'Approach',desc:'Horse and rider wait outside the arena below A.',gait:'none',dir:'',coeff:1,segs:[line([[0,-5],[0,0]],'none')]},
+{n:1,label:'A → C · working trot',desc:'Enter working trot at A. Straight up centreline to C.',gait:'trot',coeff:1,dir:'Straightness on centreline, regularity and quality of trot.',segs:[line([[0,0],Ao,Xo,Co],'trot')]},
+{n:2,label:'C → H → E · circle left 20m · E → K → A',desc:'Track left at C. Boundary C→H→E. 20m circle left at E. Boundary E→K→A.',gait:'trot',coeff:1,dir:'Quality and regularity of trot, bend, balance and shape of circle.',segs:[arc([Co,TL,Ho,Eo],'trot'),circ(0,30,9.25,180,true,'trot'),arc([Eo,Ko,BL,Ao],'trot')]},
+{n:3,label:'A · circle left (trot→canter) · A→F→B',desc:'20m circle left at A. Trot first half, canter second half. Boundary A→F→B.',gait:'canter',coeff:1,dir:'Quality of trot and canter, willing transition, shape of circle.',segs:[circ(0,10,9.25,270,true,'trot',180),circ(0,10,9.25,90,true,'canter',180),arc([Ao,BR,Fo,Bo],'canter')]},
+{n:4,label:'B → E · half circle left',desc:'Half circle left (CCW) from B to E. Centre X, radius 9.25m.',gait:'canter',coeff:1,dir:'Quality and regularity of canter, bend, balance, shape of half circle.',segs:[circ(0,30,9.25,0,true,'canter',180)]},
+{n:5,label:'Between E & K · working trot',desc:'Transition to working trot between E and K.',gait:'trot',coeff:1,dir:'Willing transition, quality of canter and trot.',segs:[grad([Eo,Ko],'canter','trot',0.5)]},
+{n:6,label:'K → A · working trot → walk at A',desc:'Working trot K→A. Transition to medium walk at A.',gait:'trot',coeff:1,dir:'Quality of trot, willing transition.',segs:[arc([Ko,BL,Ao],'trot')]},
+{n:7,label:'A → F · medium walk',desc:'Medium walk boundary A→F.',gait:'walk',coeff:1,dir:'Calm transition, regularity and quality of walk.',segs:[arc([Ao,BR,Fo],'walk')]},
+{n:8,label:'F–X–H · free walk · H–C · medium walk',desc:'Diagonal F→X→H free walk. Medium walk H→C.',gait:'freewalk',coeff:1,dir:'Quality of walk, horse stretches forward and downward.',segs:[line([Fo,Xo,Ho],'freewalk'),arc([Ho,TL,Co],'walk')]},
+{n:9,label:'C → M → B · working trot',desc:'Working trot at C. Boundary C→TR→M→B.',gait:'trot',coeff:1,dir:'Willing transition, quality of trot.',segs:[arc([Co,TR,Mo,Bo],'trot')]},
+{n:10,label:'B · circle right 20m · B→F→A',desc:'20m circle right (CW) at B. Boundary B→F→A.',gait:'trot',coeff:1,dir:'Quality and regularity of trot, bend, balance, shape of circle.',segs:[circ(0,30,9.25,0,false,'trot'),arc([Bo,Fo,BR,Ao],'trot')]},
+{n:11,label:'A · circle right (trot→canter) · A→K→E',desc:'20m circle right at A. Trot first half, canter second half. Boundary A→K→E.',gait:'canter',coeff:1,dir:'Quality of trot and canter, willing transition, shape of circle.',segs:[circ(0,10,9.25,270,false,'trot',180),circ(0,10,9.25,90,false,'canter',180),arc([Ao,BL,Ko,Eo],'canter')]},
+{n:12,label:'E → B · half circle right',desc:'Half circle right (CW) from E to B. Centre X, radius 9.25m.',gait:'canter',coeff:1,dir:'Quality and regularity of canter, bend, balance, shape of half circle.',segs:[circ(0,30,9.25,180,false,'canter',180)]},
+{n:13,label:'Between B & F · working trot · F→A',desc:'Transition to working trot between B and F. Boundary F→A.',gait:'trot',coeff:1,dir:'Willing transition, quality of canter and trot.',segs:[grad([Bo,Fo],'canter','trot',0.5),arc([Fo,BR,Ao],'trot')]},
+{n:14,label:'A → X · Halt, salute · Exit CW',desc:'Centreline working trot. Halt at X, salute. Walk to C, exit CW boundary.',gait:'halt',coeff:1,dir:'Bend in turn, straightness, willing transition, immobility.',prompt:'💡 Walk to C, track right, exit CW on long rein',promptMarker:[0,30],promptDist:4,segs:[arc([AE,Ao,Xo],'trot'),halt([0,30]),line([[0,30],CS],'walk'),arc([CS,Co,TR,Mo,Bo,Fo,BR,AE],'walk'),line([AE,[0,0],[0,-5]],'none')]},
 ];
 
 // ═══════════════════════════════════════════════════
-// ARENA — fixed at 60m (40m toggle coming soon)
+// ACTIVE TEST
 // ═══════════════════════════════════════════════════
-const arenaLen=60;
 let activeTest='1.2';
 let showExit=true;
 let MOVES=MOVES_12;
 
-const TEST_META={
-  '1.2':{title:'Preliminary 1.2 · Equestrian Australia',sub:'Effective 1 January 2023',time:330,moves:MOVES_12},
-  '1.3':{title:'Preliminary 1.3 · Equestrian Australia',sub:'Effective 1 January 2023',time:330,moves:MOVES_13},
-  'evb':{title:'Eventing Test B 45/60cm · Equestrian Australia',sub:'Eventing Test B 2020',time:240,moves:MOVES_EVB},
+const TITLES={
+  '1.2':'Preliminary 1.2 · Equestrian Australia',
+  '1.3':'Preliminary 1.3 · Equestrian Australia',
+  'evb':'Eventing Test B 45/60cm · Equestrian Australia'
 };
 
 function getActiveMoves(){
-  const base=TEST_META[activeTest].moves;
+  const base=activeTest==='1.2'?MOVES_12:activeTest==='1.3'?MOVES_13:MOVES_EVB;
   if(showExit) return base;
   const m=[...base];
   const last={...m[m.length-1],segs:[...m[m.length-1].segs]};
@@ -894,12 +593,10 @@ function switchTest(id){
   MOVES=getActiveMoves();
   moveCompletedAt.length=0;
   for(let i=0;i<MOVES.length;i++) moveCompletedAt.push(null);
-  const meta=TEST_META[id];
-  document.getElementById('htitle').textContent=meta.title;
-  document.getElementById('hsub').textContent=`${meta.sub} · ${arenaLen} × 20m arena`;
   ['12','13','evb'].forEach(t=>{
     document.getElementById('t'+t)?.classList.toggle('active',t===id.replace('.',''));
   });
+  document.getElementById('htitle').textContent=TITLES[id]||id;
   buildList();
   startAnim(0,false);
 }
@@ -915,34 +612,13 @@ function toggleExit(){
   buildList();
   startAnim(cur,false);
 }
-
-function toggleExit(){
-  showExit=!showExit;
-  const b=document.getElementById('exit-toggle');
-  b.textContent=`Exit: ${showExit?'On':'Off'}`;
-  b.classList.toggle('active',showExit);
-  MOVES=getActiveMoves();
-  moveCompletedAt.length=0;
-  for(let i=0;i<MOVES.length;i++) moveCompletedAt.push(null);
-  buildList();
-  startAnim(cur,false);
-}
-// ═══════════════════════════════════════════════════
-// CANVAS SIZING
 // ═══════════════════════════════════════════════════
 function sizeCanvas(){
   const wrap=document.querySelector('.awrap');
-  const W=wrap.clientWidth;
-  const H=wrap.clientHeight;
-  const AL=arenaLen;
-  const extraY=8; // metres above C + below A for start/end
-  // Arena real-world ratio: width=20m, height=(AL+extraY)m
-  // Maintain aspect ratio — scale to fit within available space
-  const sX=(W-64)/20;
-  const sY=(H-20)/(AL+extraY);
-  SC=Math.min(sX,sY); // use smaller scale to fit both dimensions
-  cv.width=20*SC+64;
-  cv.height=(AL+extraY)*SC+20;
+  const W=wrap.clientWidth,H=wrap.clientHeight;
+  const sX=(W-64)/20,sY=(H-20)/68;
+  SC=Math.min(sX,sY);
+  cv.width=20*SC+64; cv.height=68*SC+20;
   OX=32+10*SC;
   OY=10+3*SC;
 }
@@ -955,15 +631,15 @@ function drawArena(){
   ctx.fillStyle='#ede8e0';
   ctx.fillRect(0,0,cv.width,cv.height);
 
-  // Sand surface — use arenaLen for top
-  const[ax,ay]=toC(-10,arenaLen),[bx,by]=toC(10,0);
+  // Sand surface
+  const[ax,ay]=toC(-10,60),[bx,by]=toC(10,0);
   ctx.fillStyle='#f0e4c0';
   ctx.fillRect(ax,ay,bx-ax,by-ay);
   ctx.strokeStyle='#8a7050';ctx.lineWidth=1.5;
   ctx.strokeRect(ax,ay,bx-ax,by-ay);
 
-  // Offset boundary
-  const[ox1,oy1]=toC(-OB,arenaLen-O),[ox2,oy2]=toC(OB,O);
+  // Offset boundary (subtle dashed inner rectangle)
+  const[ox1,oy1]=toC(-OB,60-O),[ox2,oy2]=toC(OB,O);
   ctx.strokeStyle='rgba(100,80,40,0.18)';ctx.lineWidth=0.8;ctx.setLineDash([3,4]);
   ctx.strokeRect(ox1,oy1,ox2-ox1,oy2-oy1);
   ctx.setLineDash([]);
@@ -1289,24 +965,29 @@ function drawHorse(pos,g,coeff,now){
     const goldAlpha=0.5+0.3*Math.sin(t*0.005);
     // Pulsing gold ring
     ctx.globalAlpha=goldAlpha;
-    ctx.strokeStyle='#c9a84c';ctx.lineWidth=2.5;
+    ctx.strokeStyle='#c9a84c';ctx.lineWidth=2;
     ctx.beginPath();ctx.arc(pos[0],pos[1],r,0,Math.PI*2);ctx.stroke();
-    // Second outer ring at different phase
-    ctx.strokeStyle='#c9a84c';ctx.lineWidth=1;
-    ctx.globalAlpha=goldAlpha*0.4;
-    ctx.beginPath();ctx.arc(pos[0],pos[1],r+4,0,Math.PI*2);ctx.stroke();
     ctx.globalAlpha=1;
-    // Coefficient label — plain text, gold with dark shadow
+    // Coefficient bubble
     const label=`×${coeff}`;
-    const fs=Math.max(10,SC*0.55);
-    ctx.font=`bold ${fs}px DM Sans,sans-serif`;
-    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.font=`bold ${Math.max(9,SC*0.48)}px DM Sans,sans-serif`;
     const bx=pos[0]+14,by=pos[1]-14;
-    ctx.shadowColor='rgba(0,0,0,0.8)';ctx.shadowBlur=3;
-    ctx.fillStyle='#1a1200';
-    ctx.fillText(label,bx+0.5,by+0.5);
-    ctx.shadowBlur=0;
+    const bw=ctx.measureText(label).width+10;
+    const bh=16,br=4;
+    const bx0=bx-bw/2,by0=by-bh/2;
+    // Manual rounded rect
+    ctx.globalAlpha=0.92;
     ctx.fillStyle='#c9a84c';
+    ctx.beginPath();
+    ctx.moveTo(bx0+br,by0);
+    ctx.lineTo(bx0+bw-br,by0);ctx.arcTo(bx0+bw,by0,bx0+bw,by0+br,br);
+    ctx.lineTo(bx0+bw,by0+bh-br);ctx.arcTo(bx0+bw,by0+bh,bx0+bw-br,by0+bh,br);
+    ctx.lineTo(bx0+br,by0+bh);ctx.arcTo(bx0,by0+bh,bx0,by0+bh-br,br);
+    ctx.lineTo(bx0,by0+br);ctx.arcTo(bx0,by0,bx0+br,by0,br);
+    ctx.closePath();ctx.fill();
+    ctx.globalAlpha=1;
+    ctx.fillStyle='#1c1a17';
+    ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.fillText(label,bx,by);
   }
   ctx.shadowColor=c;ctx.shadowBlur=10;
@@ -1347,9 +1028,8 @@ function segDurMs(seg){
     mps=GSPEED[g]||GSPEED.trot;
   }
   if(speedMode==='timed'){
-    const testTime=TEST_META[activeTest]?.time||330;
     const totalM=MOVES.reduce((s,m)=>s+m.segs.reduce((s2,sg)=>s2+segLenM(sg),0),0);
-    mps=totalM/testTime;
+    mps=totalM/330;
     const g=seg.t==='grad'?seg.g2:seg.g;
     mps*=(GSPEED[g]||GSPEED.trot)/GSPEED.trot;
   }
@@ -1547,16 +1227,16 @@ function startAnim(idx,play){
 
 function togglePlay(){
   if(isPlaying){
+    // IMMEDIATE pause — set flag, cancel frame
     isPlaying=false;
     if(animFrame){cancelAnimationFrame(animFrame);animFrame=null;}
     document.getElementById('pb').textContent='▶ Play';
-    const mp=document.getElementById('mob-pb');if(mp)mp.textContent='▶';
   } else {
     if(cur>=MOVES.length-1)cur=0;
     isPlaying=true;
     document.getElementById('pb').textContent='⏸ Pause';
-    const mp=document.getElementById('mob-pb');if(mp)mp.textContent='⏸';
-    segT0=null;
+    // Resume from current position
+    segT0=null; // will reset on next tick
     animFrame=requestAnimationFrame(tick);
   }
 }
@@ -1566,8 +1246,6 @@ function toggleLoop(){
   const b=document.getElementById('lb');
   b.textContent='↺ Loop: '+(looping?'On':'Off');
   b.classList.toggle('active',looping);
-  const ml=document.getElementById('mob-lb');
-  if(ml)ml.classList.toggle('loop-on',looping);
 }
 
 function userNext(){
@@ -1626,7 +1304,6 @@ function updateDetail(i){
   document.getElementById('pt').textContent=`${mv.n||'·'} / ${MOVES[MOVES.length-1].n||MOVES.length-1}`;
   document.querySelectorAll('.mb').forEach((b,x)=>b.classList.toggle('active',x===i));
   document.querySelectorAll('.mb')[i]?.scrollIntoView({block:'nearest'});
-  updateMobileUI(i);
 }
 
 function buildList(){
@@ -1643,91 +1320,11 @@ function buildList(){
 function init(){
   MOVES=getActiveMoves();
   for(let i=0;i<MOVES.length;i++) moveCompletedAt.push(null);
-  sizeCanvas();
-  buildList();
-  initMobile();
-  startAnim(0,false);
-  document.getElementById('exit-toggle').classList.add('active');
+  sizeCanvas();buildList();startAnim(0,false);
 }
-
-// ─── MOBILE UI ────────────────────────────────────────
-function isMobile(){
-  return window.innerWidth<=680||window.screen.orientation?.type?.includes('portrait')||
-    (window.innerHeight>window.innerWidth&&window.innerWidth<768);
-}
-
-let mobExpanded=false;
-function toggleMobExpand(){
-  mobExpanded=!mobExpanded;
-  document.getElementById('mob-details').classList.toggle('show',mobExpanded);
-  document.getElementById('mob-expand').textContent=mobExpanded?'▴':'▾';
-}
-
-function initMobile(){
-  // CSS media query handles show/hide
-  // Just sync initial button states on mobile
-  if(isMobile()) updateMobileUI(cur);
-}
-
-function updateMobileUI(i){
-  if(!isMobile()) return;
-  const mv=MOVES[i];
-  document.getElementById('mob-num').textContent=mv.n||'·';
-  document.getElementById('mob-label').textContent=mv.label;
-  // Gait pills
-  const gaits=[...new Set(mv.segs.map(s=>s.g||s.t).filter(g=>g&&g!=='none'))];
-  if(mv.segs.some(s=>s.t==='halt')&&!gaits.includes('halt')) gaits.push('halt');
-  document.getElementById('mob-pills').innerHTML=
-    gaits.map(g=>`<span class="pill ${GS[g]||g}" style="font-size:10px;padding:2px 7px;">${GL[g]||g}</span>`).join('');
-  // Details (directive)
-  const det=document.getElementById('mob-details');
-  det.textContent=mv.dir?'📋 '+mv.dir:'';
-  det.style.display=mv.dir&&mobExpanded?'block':'none';
-  // Play button sync
-  const pb=document.getElementById('mob-pb');
-  if(pb) pb.textContent=isPlaying?'⏸':'▶';
-  // Loop button
-  const lb=document.getElementById('mob-lb');
-  if(lb) lb.classList.toggle('loop-on',looping);
-  // Sync header test buttons
-  ['12','13','evb'].forEach(t=>{
-    document.getElementById('mob-ht'+t)?.classList.toggle('active',t===activeTest.replace('.',''));
-    document.getElementById('mob-t'+t)?.classList.toggle('active',t===activeTest.replace('.',''));
-  });
-}
-
-function toggleFullscreen(){
-  const btn=document.getElementById('mob-fs');
-  const el=document.documentElement;
-  const isFS=!!(document.fullscreenElement||document.webkitFullscreenElement);
-  if(!isFS){
-    if(el.requestFullscreen) el.requestFullscreen({navigationUI:'hide'});
-    else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
-    else {
-      // iOS Safari fallback — prompt to add to home screen
-      alert('For full screen on iPhone: tap Share → Add to Home Screen, then open from your home screen.');
-      return;
-    }
-    if(btn) btn.classList.add('active');
-  } else {
-    if(document.exitFullscreen) document.exitFullscreen();
-    else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
-    if(btn) btn.classList.remove('active');
-  }
-}
-// Sync fullscreen button on exit
-document.addEventListener('fullscreenchange',()=>{
-  const btn=document.getElementById('mob-fs');
-  if(btn) btn.classList.toggle('active',!!document.fullscreenElement);
-});
-document.addEventListener('webkitfullscreenchange',()=>{
-  const btn=document.getElementById('mob-fs');
-  if(btn) btn.classList.toggle('active',!!document.webkitFullscreenElement);
-});
 
 window.addEventListener('resize',()=>{
   sizeCanvas();
-  initMobile();
   if(animFrame){cancelAnimationFrame(animFrame);animFrame=null;}
   segT0=null;startAnim(cur,isPlaying);
 });
