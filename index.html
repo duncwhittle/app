@@ -68,110 +68,136 @@ input[type=range]{width:80px;accent-color:var(--gold);}
 .mbcoeff{font-size:9px;font-weight:700;color:#7a5a00;background:var(--gold-light);padding:1px 5px;border-radius:4px;}
 @media(max-width:680px),(orientation:portrait){
   body{
-    height:100dvh; /* dvh accounts for browser chrome on mobile */
-    overflow:hidden;display:flex;flex-direction:column;
+    height:100dvh;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    background:#1a3a5c;
   }
 
-  /* Header stays at top, compact */
-  .header{padding:6px 10px;flex-shrink:0;}
-  .htitle{font-size:12px;}
+  /* Mobile header — contains title + test buttons + fullscreen */
+  .header{
+    padding:6px 10px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+  }
+  .htitle{font-size:12px;white-space:nowrap;}
   .hsub{display:none;}
   .hc{display:none;}
 
-  /* Main fills remaining space */
-  .main{flex:1;min-height:0;position:relative;}
-  .side{display:none;}
+  /* Test buttons injected into header on mobile */
+  .mob-header-tests{
+    display:flex;gap:4px;
+  }
+  .mob-header-tests button{
+    padding:3px 8px;font-size:10px;font-family:'DM Sans',sans-serif;
+    border-radius:12px;border:1px solid rgba(255,255,255,0.3);
+    background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);
+    cursor:pointer;font-weight:500;
+  }
+  .mob-header-tests button.active{
+    background:var(--gold);border-color:var(--gold);color:#1c1a17;
+  }
+  .mob-fs-btn{
+    background:none;border:1px solid rgba(255,255,255,0.3);
+    border-radius:8px;color:#fff;padding:3px 7px;
+    font-size:13px;cursor:pointer;flex-shrink:0;
+  }
+  .mob-fs-btn.active{background:rgba(201,168,76,0.4);}
 
-  /* Arena fills main exactly */
+  /* Arena area — takes remaining space, centres canvas */
+  .main{
+    flex:1;min-height:0;
+    display:flex;flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    background:#1a3a5c;
+    position:relative;
+  }
+  .side{display:none;}
   .awrap{
-    position:absolute;top:0;left:0;right:0;bottom:0;
-    padding:0;display:block;
+    /* Canvas is sized by JS to maintain 3:1 ratio — just centre it */
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex:1;
+    min-height:0;
+    width:100%;
+    position:relative;
   }
   #cv{
     display:block;
     border-radius:0;
     box-shadow:none;
-    width:100%!important;
-    height:100%!important;
+    /* Size set by JS — do NOT force 100% here */
+    max-width:100%;
   }
 
-  /* Test selector */
-  .mobile-tests{
-    display:flex;
-    position:absolute;top:8px;left:50%;transform:translateX(-50%);
-    gap:5px;z-index:20;white-space:nowrap;
-  }
-  .mobile-tests button{
-    padding:4px 10px;font-size:11px;font-family:'DM Sans',sans-serif;
-    border-radius:20px;border:1.5px solid rgba(255,255,255,0.4);
-    background:rgba(26,58,92,0.78);color:#fff;cursor:pointer;
-    backdrop-filter:blur(4px);font-weight:500;
-  }
-  .mobile-tests button.active{
-    background:rgba(201,168,76,0.92);border-color:var(--gold);color:#1c1a17;
-  }
-
-  /* Movement overlay */
+  /* Movement overlay — below canvas, above controls */
   .mobile-overlay{
-    display:flex;flex-direction:column;
-    position:absolute;bottom:66px;left:8px;right:8px;
-    background:rgba(26,58,92,0.84);backdrop-filter:blur(6px);
-    border-radius:12px;padding:7px 11px;z-index:20;
-    border:1px solid rgba(255,255,255,0.15);
+    width:100%;
+    flex-shrink:0;
+    background:var(--navy);
+    padding:5px 12px;z-index:20;
+    border-top:1px solid rgba(255,255,255,0.12);
   }
   .mob-top{display:flex;align-items:center;gap:8px;}
   .mob-num{
-    width:20px;height:20px;border-radius:50%;
+    width:18px;height:18px;border-radius:50%;
     background:rgba(255,255,255,0.15);color:#fff;
-    font-size:10px;font-weight:600;
+    font-size:9px;font-weight:600;
     display:flex;align-items:center;justify-content:center;flex-shrink:0;
   }
-  .mob-label{font-size:11.5px;font-weight:500;color:#fff;flex:1;line-height:1.3;}
+  .mob-label{font-size:11px;font-weight:500;color:#fff;flex:1;line-height:1.3;}
   .mob-expand{
     background:none;border:none;color:rgba(255,255,255,0.5);
-    font-size:13px;cursor:pointer;padding:0 2px;flex-shrink:0;
+    font-size:12px;cursor:pointer;padding:0 2px;flex-shrink:0;
   }
-  .mob-pills{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap;}
+  .mob-pills{display:flex;gap:3px;margin-top:3px;flex-wrap:wrap;}
   .mob-details{
-    display:none;margin-top:5px;
-    font-size:10.5px;color:rgba(255,255,255,0.75);line-height:1.5;
-    border-top:1px solid rgba(255,255,255,0.1);padding-top:5px;
+    display:none;margin-top:4px;
+    font-size:10px;color:rgba(255,255,255,0.75);line-height:1.5;
+    border-top:1px solid rgba(255,255,255,0.1);padding-top:4px;
   }
   .mob-details.show{display:block;}
 
-  /* Controls bar — sits above iOS safe area */
+  /* Controls bar */
   .mobile-controls{
-    position:absolute;bottom:0;left:0;right:0;
+    width:100%;flex-shrink:0;
     display:flex;align-items:center;justify-content:center;
     gap:8px;
     padding:6px 10px;
     padding-bottom:calc(6px + env(safe-area-inset-bottom));
-    z-index:20;
-    background:rgba(26,58,92,0.82);backdrop-filter:blur(4px);
-    border-top:1px solid rgba(255,255,255,0.1);
+    background:var(--navy);
+    border-top:1px solid rgba(255,255,255,0.12);
   }
   .mob-btn{
-    width:40px;height:40px;border-radius:50%;
-    border:1.5px solid rgba(255,255,255,0.3);
+    width:38px;height:38px;border-radius:50%;
+    border:1px solid rgba(255,255,255,0.25);
     background:rgba(255,255,255,0.1);
-    color:#fff;font-size:14px;cursor:pointer;
+    color:#fff;font-size:13px;cursor:pointer;
     display:flex;align-items:center;justify-content:center;
     flex-shrink:0;
   }
   .mob-btn.play{
     background:rgba(201,168,76,0.92);border-color:var(--gold);
-    color:#1c1a17;width:48px;height:48px;font-size:17px;
+    color:#1c1a17;width:46px;height:46px;font-size:17px;
   }
-  .mob-btn.loop-on{background:rgba(76,175,80,0.8);border-color:#4caf50;}
-  .mob-btn.fs-on{background:rgba(201,168,76,0.5);}
+  .mob-btn.loop-on{background:rgba(76,175,80,0.7);border-color:#4caf50;}
 
   /* Speed slider */
   .mob-speed{
-    display:flex;align-items:center;gap:4px;flex:1;max-width:110px;
+    display:flex;align-items:center;gap:4px;flex:1;max-width:100px;
   }
   .mob-speed-lbl{font-size:9px;color:rgba(255,255,255,0.6);white-space:nowrap;}
   .mob-speed input[type=range]{width:100%;accent-color:var(--gold);}
-  .mob-speed-val{font-size:9px;color:rgba(255,255,255,0.8);min-width:22px;text-align:right;}
+  .mob-speed-val{font-size:9px;color:rgba(255,255,255,0.8);min-width:20px;text-align:right;}
+
+  /* Hide floating test selector — now in header */
+  .mobile-tests{display:none!important;}
 }
 </style>
 
@@ -207,8 +233,17 @@ input[type=range]{width:80px;accent-color:var(--gold);}
 </head>
 <body>
 <div class="header">
-  <div><div class="htitle" id="htitle">Preliminary 1.2 · Equestrian Australia</div>
-  <div class="hsub" id="hsub">Effective 1 January 2023 · 60 × 20m arena</div></div>
+  <div>
+    <div class="htitle" id="htitle">Preliminary 1.2 · Equestrian Australia</div>
+    <div class="hsub" id="hsub">Effective 1 January 2023 · 60 × 20m arena</div>
+  </div>
+  <!-- Mobile: test buttons + fullscreen in header -->
+  <div class="mob-header-tests" id="mob-header-tests" style="display:none">
+    <button id="mob-ht12" onclick="switchTest('1.2')" class="active">1.2</button>
+    <button id="mob-ht13" onclick="switchTest('1.3')">1.3</button>
+    <button id="mob-htevb" onclick="switchTest('evb')">Ev B</button>
+  </div>
+  <button class="mob-fs-btn" id="mob-fs" onclick="toggleFullscreen()" style="display:none">⛶</button>
   <div class="hc">
     <span class="hlbl">Test</span>
     <button class="hbtn active" id="t12" onclick="switchTest('1.2')">Prelim 1.2</button>
@@ -229,33 +264,35 @@ input[type=range]{width:80px;accent-color:var(--gold);}
 <div class="main">
   <div class="awrap">
     <canvas id="cv"></canvas>
-    <!-- Mobile UI — positioned absolute over arena -->
+    <!-- Floating test selector (fallback, hidden on mobile by CSS) -->
     <div class="mobile-tests" id="mob-tests" style="display:none">
       <button id="mob-t12" onclick="switchTest('1.2')" class="active">Prelim 1.2</button>
       <button id="mob-t13" onclick="switchTest('1.3')">Prelim 1.3</button>
       <button id="mob-tevb" onclick="switchTest('evb')">Ev Test B</button>
     </div>
-    <div class="mobile-overlay" id="mob-overlay" style="display:none">
-      <div class="mob-top">
-        <div class="mob-num" id="mob-num">·</div>
-        <div class="mob-label" id="mob-label">—</div>
-        <button class="mob-expand" id="mob-expand" onclick="toggleMobExpand()">▾</button>
-      </div>
-      <div class="mob-pills" id="mob-pills"></div>
-      <div class="mob-details" id="mob-details"></div>
+  </div>
+
+  <!-- Mobile overlay and controls sit BELOW canvas, not floating over it -->
+  <div class="mobile-overlay" id="mob-overlay" style="display:none">
+    <div class="mob-top">
+      <div class="mob-num" id="mob-num">·</div>
+      <div class="mob-label" id="mob-label">—</div>
+      <button class="mob-expand" id="mob-expand" onclick="toggleMobExpand()">▾</button>
     </div>
-    <div class="mobile-controls" id="mob-controls" style="display:none">
-      <button class="mob-btn" onclick="userPrev()">←</button>
-      <button class="mob-btn play" id="mob-pb" onclick="togglePlay()">▶</button>
-      <button class="mob-btn" onclick="userNext()">→</button>
-      <button class="mob-btn" id="mob-lb" onclick="toggleLoop()">↺</button>
-      <button class="mob-btn" id="mob-fs" onclick="toggleFullscreen()" title="Fullscreen">⛶</button>
-      <div class="mob-speed">
-        <span class="mob-speed-lbl">Speed</span>
-        <input type="range" min="20" max="1000" value="800" step="5"
-          oninput="setSpeed(+this.value);document.getElementById('mob-spval').textContent=speedMult.toFixed(speedMult<1?1:0)+'×'">
-        <span class="mob-speed-val" id="mob-spval">8×</span>
-      </div>
+    <div class="mob-pills" id="mob-pills"></div>
+    <div class="mob-details" id="mob-details"></div>
+  </div>
+
+  <div class="mobile-controls" id="mob-controls" style="display:none">
+    <button class="mob-btn" onclick="userPrev()">←</button>
+    <button class="mob-btn play" id="mob-pb" onclick="togglePlay()">▶</button>
+    <button class="mob-btn" onclick="userNext()">→</button>
+    <button class="mob-btn" id="mob-lb" onclick="toggleLoop()">↺</button>
+    <div class="mob-speed">
+      <span class="mob-speed-lbl">Speed</span>
+      <input type="range" min="20" max="1000" value="800" step="5"
+        oninput="setSpeed(+this.value);document.getElementById('mob-spval').textContent=speedMult.toFixed(speedMult<1?1:0)+'×'">
+      <span class="mob-speed-val" id="mob-spval">8×</span>
     </div>
   </div>
   <div class="side">
@@ -915,15 +952,14 @@ function toggleExit(){
 function sizeCanvas(){
   const wrap=document.querySelector('.awrap');
   const W=wrap.clientWidth;
-  // On mobile subtract controls bar height (approx 66px incl safe area)
-  // Use getBoundingClientRect for accuracy
-  const mob=isMobile();
-  const ctrlH=mob?66:0;
-  const H=wrap.clientHeight-ctrlH;
+  const H=wrap.clientHeight;
   const AL=arenaLen;
-  const extraY=8;
-  const sX=(W-64)/20, sY=(Math.max(H,100)-20)/(AL+extraY);
-  SC=Math.min(sX,sY);
+  const extraY=8; // metres above C + below A for start/end
+  // Arena real-world ratio: width=20m, height=(AL+extraY)m
+  // Maintain aspect ratio — scale to fit within available space
+  const sX=(W-64)/20;
+  const sY=(H-20)/(AL+extraY);
+  SC=Math.min(sX,sY); // use smaller scale to fit both dimensions
   cv.width=20*SC+64;
   cv.height=(AL+extraY)*SC+20;
   OX=32+10*SC;
@@ -1648,9 +1684,14 @@ function toggleMobExpand(){
 
 function initMobile(){
   const mobile=isMobile();
-  document.getElementById('mob-tests').style.display=mobile?'flex':'none';
+  // Header elements
+  document.getElementById('mob-header-tests').style.display=mobile?'flex':'none';
+  document.getElementById('mob-fs').style.display=mobile?'block':'none';
+  // Below-canvas elements
   document.getElementById('mob-overlay').style.display=mobile?'flex':'none';
   document.getElementById('mob-controls').style.display=mobile?'flex':'none';
+  // Hide floating test selector on mobile (now in header)
+  document.getElementById('mob-tests').style.display='none';
 }
 
 function updateMobileUI(i){
@@ -1673,8 +1714,9 @@ function updateMobileUI(i){
   // Loop button
   const lb=document.getElementById('mob-lb');
   if(lb) lb.classList.toggle('loop-on',looping);
-  // Test buttons
+  // Sync header test buttons
   ['12','13','evb'].forEach(t=>{
+    document.getElementById('mob-ht'+t)?.classList.toggle('active',t===activeTest.replace('.',''));
     document.getElementById('mob-t'+t)?.classList.toggle('active',t===activeTest.replace('.',''));
   });
 }
